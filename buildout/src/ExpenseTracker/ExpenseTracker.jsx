@@ -5,12 +5,13 @@ export default function ExpenseTracker(){
   // we want to show popup but css will same only under the box content change 
   const[showPopup,setShowPopup]= useState(false);
   const[popupType,setPopupType]= useState("");
+  const[category,setCategory] = useState("");
   const handleClickAddExpense=()=>{ 
-      setPopupType("Expenses");
+      setPopupType("expense");
       setShowPopup(true);   
   }
   const handleClickAddIncome=()=>{
-      setPopupType("Balance");
+      setPopupType("balance");
       setShowPopup(true);
   }
     return(
@@ -29,21 +30,38 @@ export default function ExpenseTracker(){
           </div>
           {showPopup && (
             <div className={popupStyles.overlay}>
-              <div className={popupStyles.popup} style={{gap:"20px",display:"flex",flexDirection:"column",border:"none"}}>
-                <h2 style={{fontWeight:"700",fontSize:"30px",marginLeft:"30px"}}>Add {popupType}</h2>
+            {popupType === "expense" ? (
+                <div className={popupStyles.expensepopup} style={{gap:"20px",display:"flex",flexDirection:"column",border:"none"}}>
+                <h2 style={{fontWeight:"700",fontSize:"30px",marginLeft:"30px"}}>Add Expenses</h2>
                 <div style={{display:"flex",flexWrap:"wrap",justifyContent:"space-around"}}>
-                  <input className={style.input} placeholder="Title"/>
-                   <input  className={style.input} placeholder="Price"/>
+                  <input name="title"  className={style.input} placeholder="Title"/>
+                   <input name="price" className={style.input} placeholder="Price"/>
                 </div>
                  <div style={{display:"flex",flexWrap:"wrap",justifyContent:"space-around"}}>
-                  <input className={style.input} placeholder="Select Category"/>
-                   <input  className={style.input} placeholder="dd/mm/yyyy"/>
+                  <select className={style.category} name="category" onChange={(e)=>setCategory(e.target.value)} value={category}>
+                    <option>Select Category</option>
+                    <option>Food</option>
+                    <option>Entertainment</option>
+                    <option>Travel</option>
+                  </select>
+                   <input name="date" type="date" className={style.category} placeholder="dd/mm/yyyy"/>
                 </div>
                  <div style={{display:"flex",gap:"20px",marginLeft:"35px"}}>
-                  <button className={style.addbutton}>Add {popupType}</button>
+                  <button type="submit" labeled="Add Expense"  className={style.addbutton}>Add Expense</button>
                   <button className={style.cancelbutton}>Cancel</button>
                 </div>
               </div>
+            ):(
+                <div className={popupStyles.balancepopup} style={{gap:"20px",display:"flex",flexDirection:"column",border:"none"}}>
+                <h2 style={{fontWeight:"700",fontSize:"30px",marginLeft:"30px"}}>Add Balance</h2>
+                <div style={{display:"flex",flexWrap:"wrap",justifyContent:"space-around"}}>
+                   <input name="amount" className={style.input} type="number" placeholder="Income Amount"/>
+                   <button  type="submit" labeled="Add Balance" className={style.addBalance}>Add Balance</button>
+                   <button className={style.cancelbutton}>Cancel</button>
+                </div>
+              </div>
+            )}
+            
             </div>
           )}
                     <div style={{height:"100%",width:"29%",display:"flex",flexDirection:"column",gap:"10px"}}>

@@ -14,6 +14,14 @@
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 10px;
     border: none;
+
+}
+.category{
+    padding: 10px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    border: none;
+    width: 34%;
 }
 .addbutton{
     padding: 10px;
@@ -34,4 +42,15 @@
     cursor: pointer;
     border: none;
 
+}
+.addBalance{
+    padding: 10px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    Width:123px;
+    height:51px;
+    background-color: rgba(244, 187, 74, 1);
+    cursor: pointer;
+    color:rgba(255, 255, 255, 1);
+    border: none;
 }

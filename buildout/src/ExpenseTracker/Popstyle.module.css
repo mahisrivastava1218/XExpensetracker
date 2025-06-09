@@ -10,10 +10,17 @@
     align-items: center;
     z-index: 1000;
 }
-.popup{
+.expensepopup{
     background-color: "#EFEFEF";
     border-radius: 15px;
     width: 30%;
     height: 40%;
-    box-shadow: 0 4px 1 2px  rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px  rgba(0,0,0,0.3);
+}
+.balancepopup{
+    background-color: "#EFEFEF";
+    border-radius: 15px;
+    width: 30%;
+    height: 30%;
+    box-shadow: 0 4px 12px  rgba(0,0,0,0.3);
 }
