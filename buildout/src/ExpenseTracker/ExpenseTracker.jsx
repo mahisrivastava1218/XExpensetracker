@@ -72,11 +72,11 @@ export default function ExpenseTracker(){
           <div style={{height:"100%",width:"70%",display:"flex",justifyContent:"space-around"}}>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
               <h2 className={style.heading} labeled="Wallet Balance">Wallet Balance: <span style={{color:"#B5DC52"}}>₹5000</span></h2>
-              <button onClick={handleClickAddIncome} type="button" labeled="+ Add Income" style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+Add Income</button>
+              <button onClick={handleClickAddIncome} type="button" labeled="+ Add Income" style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Income</button>
             </div>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
               <h2 className={style.heading}>Expenses: <span style={{color:"###F4BB4A"}}>₹0</span></h2>
-              <button onClick={handleClickAddExpense} type="button" labeled="+ Add Expense" style={{cursor:"pointer",backgroundColor:"#FF4747",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+Add Expense</button>
+              <button onClick={handleClickAddExpense} type="button" labeled="+ Add Expense" style={{cursor:"pointer",backgroundColor:"#FF4747",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Expense</button>
             </div>
           </div>
           {showPopup && (
