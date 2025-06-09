@@ -9,3 +9,29 @@
     font-size: 30px;
     font-weight: 400;
 }
+.input{
+    padding: 10px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    border: none;
+}
+.addbutton{
+    padding: 10px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 15px;
+    Width:223px;
+    height:51px;
+    background-color: rgba(244, 187, 74, 1);
+    cursor: pointer;
+    color:rgba(255, 255, 255, 1);
+    border: none;
+}
+.cancelbutton{
+    width: 112px;
+    height: 51px;
+    border-radius: 15px;
+    background-color: rgba(217, 217, 217, 1);
+    cursor: pointer;
+    border: none;
+
+}
