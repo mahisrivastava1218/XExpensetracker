@@ -353,8 +353,8 @@ export default function ExpenseTracker(){
             </h2>
             <button 
               onClick={handleClickAddIncome} 
-              type="button" 
-              aria-label="Add income to wallet balance"
+              type="button"
+              labeled="+ Add Income"
               style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}
             >
               + Add Income
@@ -368,6 +368,7 @@ export default function ExpenseTracker(){
               onClick={handleClickAddExpense} 
               type="button" 
               aria-label="Add new expense"
+              labeled="+ Add Expense"
               style={{cursor:"pointer",backgroundColor:"#FF4747",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}
             >
               + Add Expense
@@ -430,7 +431,7 @@ export default function ExpenseTracker(){
                 />
               </div>
               <div style={{display:"flex",gap:"20px",marginLeft:"35px"}}>
-                <button onClick={handleAddExpense} type="button" data-testid="submit-expense-btn" className={style.addbutton}>
+                <button type="submit" onClick={handleAddExpense} type="button" data-testid="submit-expense-btn" className={style.addbutton}>
                   {isEditing ? "Update Expense" : "Add Expense"}
                 </button>
                 <button onClick={handleCancelExpense} type="button" className={style.cancelbutton}>Cancel</button>
@@ -451,7 +452,8 @@ export default function ExpenseTracker(){
                 />
                 <div style={{display:"flex", gap:"20px", width:"100%", justifyContent:"center"}}>
                   <button 
-                    type="submit" 
+                    type="number" 
+                    labeled="Add Balance"
                     className={style.addBalance}
                   >
                     Add Balance
