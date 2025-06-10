@@ -431,7 +431,7 @@ export default function ExpenseTracker(){
                 />
               </div>
               <div style={{display:"flex",gap:"20px",marginLeft:"35px"}}>
-                <button type="submit" onClick={handleAddExpense} type="button" data-testid="submit-expense-btn" className={style.addbutton}>
+                <button onClick={handleAddExpense} type="submit" data-testid="submit-expense-btn" className={style.addbutton}>
                   {isEditing ? "Update Expense" : "Add Expense"}
                 </button>
                 <button onClick={handleCancelExpense} type="button" className={style.cancelbutton}>Cancel</button>
@@ -452,8 +452,7 @@ export default function ExpenseTracker(){
                 />
                 <div style={{display:"flex", gap:"20px", width:"100%", justifyContent:"center"}}>
                   <button 
-                    type="number" 
-                    labeled="Add Balance"
+                    type="submit" 
                     className={style.addBalance}
                   >
                     Add Balance
