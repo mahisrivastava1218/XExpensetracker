@@ -5,18 +5,35 @@ import Edit from "@mui/icons-material/Edit";
 import Food from '@mui/icons-material/LocalDining';
 import Travel from '@mui/icons-material/DepartureBoard';
 import Entertainment from'@mui/icons-material/VideogameAssetOff';
-import { useState } from "react";
+import { useState,useEffect } from "react";
 export default function ExpenseTracker(){
   // we want to show popup but css will same only under the box content change 
   const[showPopup,setShowPopup]= useState(false);
   const[popupType,setPopupType]= useState("");
   const[amount,setAmount] = useState("");
+  // localstorage wallet
+  const[balance,setBalance] = useState(0);
   const[expense,setExpense] = useState({
     title:"",
     price:"",
     category:"",
     date:""
   });
+  const[expenseList,setExpenseList] = useState([]) //to store all expenses
+  useEffect(()=>{
+    const savedBalance=localStorage.getItem("balance");
+    if(savedBalance){
+      setBalance(Number(savedBalance));
+    }
+    //get expenses from localstorage
+    const savedExpenses = JSON.parse(localStorage.getItem("expenseList")|| []);
+    setExpenseList(savedExpenses);
+  },[])
+  //save  updated expensed when expense list change
+  useEffect(()=>{
+    localStorage.setItem("expenseList",JSON.stringify(expenseList));
+  },[expenseList]);
+
   const handleClickAddExpense=()=>{ 
       setPopupType("expense");
       setShowPopup(true);   
@@ -28,6 +45,7 @@ export default function ExpenseTracker(){
   const handleAddBalance=()=>{
     if(amount){
          localStorage.setItem("balance",amount);
+         setBalance(Number(amount));
          alert("Balance added successfully");
         //  clear input
          setAmount("");
@@ -44,15 +62,11 @@ export default function ExpenseTracker(){
     const{title,price,category,date} = expense;
     if(title && price && category && date){ 
       localStorage.setItem("expense",JSON.stringify(expense));
-       alert("Expense added successfully");
-        //  clear input
-         setExpense({
-           title:"",
-           price:"",
-           category:"",
-           date:""
-         });
-         setShowPopup(false);
+       const updatedList = [...expenseList, expense];
+      setExpenseList(updatedList);
+      alert("Expense added successfully");
+      setExpense({ title: "", price: "", category: "", date: "" });
+      setShowPopup(false);
     }else{
       alert("Please fill Expense");
     }
@@ -73,6 +87,15 @@ export default function ExpenseTracker(){
       [name]:value
     }));
   }
+  const getCategoryIcon=(category)=>{
+    switch(category){
+     case "Food" : return <Food/>
+     case "Entertainment": return <Entertainment/>
+     case "Travel": return <Travel/>
+     default: return null;
+    }
+  }
+  const totalExpenses = expenseList.reduce((acc,curr)=>acc+Number(curr.price),0);
   console.log(localStorage.getItem("expense","balance"));
     return(
         <div style={{width:"100vw",height:"100vh",boxSizing:"border-box",backgroundColor:"#3B3B3B",display:"flex",flexDirection:"column",boxSizing:"border-box"}}>
@@ -80,11 +103,11 @@ export default function ExpenseTracker(){
           <header style={{backgroundColor:"#626262",height:"40%",marginLeft:"32px",marginRight:"32px",display:"flex",flexWrap:"wrap",justifyContent:"space-between"}}>
           <div style={{height:"100%",width:"70%",display:"flex",justifyContent:"space-around"}}>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <h2 className={style.heading} labeled="Wallet Balance">Wallet Balance: <span style={{color:"#B5DC52"}}>₹5000</span></h2>
+              <h2 className={style.heading} labeled="Wallet Balance">Wallet Balance: <span style={{color:"#B5DC52"}}>₹{balance}</span></h2>
               <button onClick={handleClickAddIncome} type="button" labeled="+ Add Income" style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Income</button>
             </div>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <h2 className={style.heading}>Expenses: <span style={{color:"###F4BB4A"}}>₹0</span></h2>
+              <h2 className={style.heading}>Expenses: <span style={{color:"###F4BB4A"}}>₹{totalExpenses}</span></h2>
               <button onClick={handleClickAddExpense} type="button" labeled="+ Add Expense" style={{cursor:"pointer",backgroundColor:"#FF4747",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Expense</button>
             </div>
           </div>
@@ -137,17 +160,17 @@ export default function ExpenseTracker(){
           </div>
           </header>
           <footer style={{width:"100%",height:"55%",top:"10px",display:"flex",flexWrap:"wrap",margin:"32px",gap:"15px"}}>
-            <div style={{height:"100%",width:"60%",display:"flex",flexDirection:"column"}}>
+            <div style={{width:"60%",display:"flex",flexDirection:"column"}}>
                    <h2 className={style.footerHeading}>Recent Transactions</h2>
                <div style={{width:"100%",height:"100%"}}>
-                <div  style={{backgroundColor:"white",width:"100%",height:"30%",borderRadius:"10px",display:"flex",alignItems:"center",paddingLeft:"10px"}}>
-                  {expense.length>0 ? (
-                    expense.map((item,index)=>(
-                    <div style={{display:"flex",justifyContent:"space-between"}}>
-                    <div>
-                      <img src={item.category} value={item.category} alt="category-icon"/>
+                <div  style={{backgroundColor:"white",width:"100%",height:"100%",borderRadius:"10px",display:"flex",flexDirection:"column",paddingLeft:"10px"}}>
+                  {expenseList.length>0 ? (
+                    expenseList.map((item,index)=>(
+                    <div key={index} style={{display:"flex",justifyContent:"space-between",marginBottom: "10px"}}>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:"10px"}}>
+                      {getCategoryIcon(item.category)}
                       <div style={{display:"flex",flexDirection:"column"}}>
-                      <div><strong>{item.title}</strong></div>
+                      <div><strong>{item.category}</strong></div>
                       <div>{item.date}</div>
                       </div>
                     </div>
