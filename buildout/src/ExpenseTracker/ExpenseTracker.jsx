@@ -1,4 +1,3 @@
-
 import DeleteIcon from '@mui/icons-material/Delete';
 import style from "./ExpenseTracker.module.css";
 import popupStyles from "./Popstyle.module.css";
@@ -28,8 +27,8 @@ export default function ExpenseTracker(){
     if(savedBalance){
       setBalance(Number(savedBalance));
     }
-    //get expenses from localstorage - Fixed key name for Cypress tests
-    const savedExpenses = JSON.parse(localStorage.getItem("expenses")|| "[]");
+    //get expenses from localstorage
+    const savedExpenses = JSON.parse(localStorage.getItem("expenseList")|| "[]");
     setExpenseList(savedExpenses);
   },[])
   
@@ -38,9 +37,9 @@ export default function ExpenseTracker(){
     localStorage.setItem("balance", balance.toString());
   },[balance]);
   
-  //save updated expenses when expense list change - Fixed key name
+  //save  updated expensed when expense list change
   useEffect(()=>{
-    localStorage.setItem("expenses",JSON.stringify(expenseList));
+    localStorage.setItem("expenseList",JSON.stringify(expenseList));
   },[expenseList]);
   
   const handleClickAddExpense=()=>{ 
@@ -54,16 +53,15 @@ export default function ExpenseTracker(){
   }
   
   const handleAddBalance=()=>{
-    const amountNum = Number(amount);
-    if(amount && amountNum > 0){
-         const newBalance = balance + amountNum;
+    if(amount){
+         const newBalance =balance+ Number(amount);
          setBalance(newBalance);
          alert("Balance added successfully");
         //  clear input
          setAmount("");
          setShowPopup(false);
     }else{
-      alert("Please enter a valid positive amount")
+      alert("Please fill amount")
     }
   }
   
@@ -72,28 +70,17 @@ export default function ExpenseTracker(){
     setShowPopup(false);
   }
   
-  // FIXED: Now deducts balance and adds proper validation
   const handleAddExpense=()=>{
     const{title,price,category,date} = expense;
     if(title && price && category && date){ 
-      const expenseAmount = Number(price);
-      
-      // Check if sufficient balance
-      if(balance < expenseAmount) {
-        alert("Insufficient balance!");
-        return;
-      }
-      
-      // Deduct from balance - This was missing!
-      setBalance(balance - expenseAmount);
-      
-      const updatedList = [...expenseList, expense];
+      localStorage.setItem("expense",JSON.stringify(expense));
+       const updatedList = [...expenseList, expense];
       setExpenseList(updatedList);
       alert("Expense added successfully");
       setExpense({ title: "", price: "", category: "", date: "" });
       setShowPopup(false);
     }else{
-      alert("Please fill all expense fields");
+      alert("Please fill Expense");
     }
   }
   
@@ -115,18 +102,6 @@ export default function ExpenseTracker(){
     }));
   }
   
-  // NEW: Delete expense functionality
-  const handleDeleteExpense = (indexToDelete) => {
-    const expenseToDelete = expenseList[indexToDelete];
-    // Return money to balance
-    setBalance(balance + Number(expenseToDelete.price));
-    
-    // Remove from list
-    const updatedList = expenseList.filter((_, index) => index !== indexToDelete);
-    setExpenseList(updatedList);
-    alert("Expense deleted successfully");
-  };
-  
   const getCategoryIcon=(category)=>{
     switch(category){
      case "Food" : return <Food/>
@@ -135,18 +110,6 @@ export default function ExpenseTracker(){
      default: return null;
     }
   }
-  
-  // NEW: Calculate top expenses by category
-  const getTopExpenses = () => {
-    const categoryTotals = expenseList.reduce((acc, expense) => {
-      acc[expense.category] = (acc[expense.category] || 0) + Number(expense.price);
-      return acc;
-    }, {});
-    
-    return Object.entries(categoryTotals)
-      .sort(([,a], [,b]) => b - a)
-      .slice(0, 3);
-  };
   
   const totalExpenses = expenseList.reduce((acc,curr)=>acc+Number(curr.price),0);
   const totalbalance = balance;
@@ -157,11 +120,10 @@ export default function ExpenseTracker(){
           <header style={{backgroundColor:"#626262",height:"40%",marginLeft:"32px",marginRight:"32px",display:"flex",flexWrap:"wrap",justifyContent:"space-between"}}>
           <div style={{height:"100%",width:"70%",display:"flex",justifyContent:"space-around"}}>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <h2 className={style.heading} data-testid="wallet-balance">Wallet Balance: <span style={{color:"#B5DC52"}}>₹{totalbalance}</span></h2>
+              <h2 className={style.heading} data-testid="wallet-balance">Wallet Balance: <span style={{color:"#B5DC52"}}>{totalbalance}</span></h2>
               <button 
                 onClick={handleClickAddIncome} 
                 type="button" 
-                aria-label="Add income to wallet balance"
                 style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}
               >
                 + Add Income
@@ -172,7 +134,6 @@ export default function ExpenseTracker(){
               <button 
                 onClick={handleClickAddExpense} 
                 type="button" 
-                aria-label="Add new expense"
                 style={{cursor:"pointer",backgroundColor:"#FF4747",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}
               >
                 + Add Expense
@@ -212,7 +173,6 @@ export default function ExpenseTracker(){
                      className={style.input} 
                      type="number" 
                      placeholder="Income Amount" 
-                     data-testid="income-amount"
                      onChange={(e)=>setAmount(e.target.value)}
                    />
                    <button 
@@ -247,7 +207,7 @@ export default function ExpenseTracker(){
           </header>
           <footer style={{width:"100%",height:"55%",top:"10px",display:"flex",flexWrap:"wrap",margin:"32px",gap:"15px"}}>
             <div style={{width:"60%",display:"flex",flexDirection:"column"}}>
-                   <h2 className={style.footerHeading}>Transactions</h2>
+                   <h2 className={style.footerHeading}>Recent Transactions</h2>
                <div style={{width:"100%",height:"100%"}}>
                 <div style={{backgroundColor:"white",width:"100%",height:"100%",borderRadius:"10px",display:"flex",flexDirection:"column",paddingLeft:"10px"}} data-testid="transactions-list">
                   {expenseList.length>0 ? (
@@ -263,11 +223,7 @@ export default function ExpenseTracker(){
                     <div style={{display:"flex",flexWrap:"wrap",gap:"10px"}}>
                       <div>₹{item.price}</div>
                       <Edit alt="edit"/>
-                      <DeleteIcon 
-                        style={{cursor:"pointer"}} 
-                        onClick={() => handleDeleteExpense(index)}
-                        data-testid={`delete-${index}`}
-                      />
+                      <DeleteIcon style={{cursor:"pointer"}} data-testid={`delete-${index}`}/>
                     </div>
                     </div>
                     ))
@@ -280,15 +236,9 @@ export default function ExpenseTracker(){
             <div style={{height:"100%",width:"35%",display:"flex",flexDirection:"column"}}>
                <h2 className={style.footerHeading}>Top Expenses</h2>
                <div style={{backgroundColor:"white",width:"100%",height:"100%",display:"flex",flexDirection:"column",borderRadius:"10px"}}>
-                {getTopExpenses().length > 0 ? (
-                  getTopExpenses().map(([category, amount]) => (
-                    <div key={category} style={{width:"100%",height:"10%",margin:"30px"}}>
-                      {category}<span style={{marginLeft:"10px"}}>₹{amount}</span>
-                    </div>
-                  ))
-                ) : (
-                  <div style={{width:"100%",height:"10%",margin:"30px"}}>No expenses yet!</div>
-                )}
+                <div style={{width:"100%",height:"10%",margin:"30px"}}>Entertainment<span style={{marginLeft:"10px"}}>hello</span></div>
+                <div style={{width:"100%",height:"10%",margin:"30px"}}>Food<span style={{marginLeft:"10px"}}>hello</span></div>
+                <div style={{width:"100%",height:"10%",margin:"30px"}}>Travel<span style={{marginLeft:"10px"}}>hello</span></div>
                </div>
             </div>
           </footer>
