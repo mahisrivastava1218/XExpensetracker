@@ -120,7 +120,7 @@ export default function ExpenseTracker(){
           <header style={{backgroundColor:"#626262",height:"40%",marginLeft:"32px",marginRight:"32px",display:"flex",flexWrap:"wrap",justifyContent:"space-between"}}>
           <div style={{height:"100%",width:"70%",display:"flex",justifyContent:"space-around"}}>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <h2 className={style.heading} data-testid="wallet-balance">Wallet Balance: <span style={{color:"#B5DC52"}}>{totalbalance}</span></h2>
+              <h2 className={style.heading} data-testid="wallet-balance">Wallet Balance <span style={{color:"#B5DC52"}}>{totalbalance}</span></h2>
               <button 
                 onClick={handleClickAddIncome} 
                 type="button" 
