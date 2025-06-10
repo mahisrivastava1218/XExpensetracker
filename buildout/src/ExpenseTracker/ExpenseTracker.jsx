@@ -26,7 +26,7 @@ export default function ExpenseTracker(){
       setBalance(Number(savedBalance));
     }
     //get expenses from localstorage
-    const savedExpenses = JSON.parse(localStorage.getItem("expenseList")|| []);
+    const savedExpenses = JSON.parse(localStorage.getItem("expenseList")|| "[]");
     setExpenseList(savedExpenses);
   },[])
   //save  updated expensed when expense list change
@@ -107,7 +107,7 @@ export default function ExpenseTracker(){
               <button onClick={handleClickAddIncome} type="button" labeled="+ Add Income" style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Income</button>
             </div>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <h2 className={style.heading}>Expenses: <span style={{color:"###F4BB4A"}}>₹{totalExpenses}</span></h2>
+              <h2 className={style.heading}>Expenses: <span style={{color:"#F4BB4A"}}>₹{totalExpenses}</span></h2>
               <button onClick={handleClickAddExpense} type="button" labeled="+ Add Expense" style={{cursor:"pointer",backgroundColor:"#FF4747",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Expense</button>
             </div>
           </div>
