@@ -33,7 +33,6 @@ export default function ExpenseTracker(){
   useEffect(()=>{
     localStorage.setItem("expenseList",JSON.stringify(expenseList));
   },[expenseList]);
-
   const handleClickAddExpense=()=>{ 
       setPopupType("expense");
       setShowPopup(true);   
@@ -44,8 +43,8 @@ export default function ExpenseTracker(){
   }
   const handleAddBalance=()=>{
     if(amount){
-         localStorage.setItem("balance",amount);
-         setBalance(Number(amount));
+         const newBalance =balance+ Number(amount);
+         setBalance(newBalance);
          alert("Balance added successfully");
         //  clear input
          setAmount("");
@@ -96,14 +95,17 @@ export default function ExpenseTracker(){
     }
   }
   const totalExpenses = expenseList.reduce((acc,curr)=>acc+Number(curr.price),0);
-  console.log(localStorage.getItem("expense","balance"));
-    return(
-        <div style={{width:"100vw",height:"100vh",boxSizing:"border-box",backgroundColor:"#3B3B3B",display:"flex",flexDirection:"column",boxSizing:"border-box"}}>
+  const totalbalance = balance;
+  console.log("expense:",localStorage.getItem("expense"));
+  console.log("balance:",localStorage.getItem("balance"));
+
+  return(
+        <div style={{width:"100vw",height:"100vh",boxSizing:"border-box",backgroundColor:"#3B3B3B",display:"flex",flexDirection:"column"}}>
           <h1 style={{color:"white",marginLeft:"30px",fontWeight:"700",fontSize:"32px"}}>Expense Tracker</h1>
           <header style={{backgroundColor:"#626262",height:"40%",marginLeft:"32px",marginRight:"32px",display:"flex",flexWrap:"wrap",justifyContent:"space-between"}}>
           <div style={{height:"100%",width:"70%",display:"flex",justifyContent:"space-around"}}>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
-              <h2 className={style.heading} labeled="Wallet Balance">Wallet Balance: <span style={{color:"#B5DC52"}}>₹{balance}</span></h2>
+              <h2 className={style.heading} labeled="Wallet Balance">Wallet Balance: <span style={{color:"#B5DC52"}}>₹{totalbalance}</span></h2>
               <button onClick={handleClickAddIncome} type="button" labeled="+ Add Income" style={{cursor:"pointer",backgroundColor:"#B5DC52",width:"167px",height:"38px",borderRadius:"15px",fontSize:"16px",fontWeight:"700",color:"white",border:"none"}}>+ Add Income</button>
             </div>
             <div style={{height:"80%",width:"35%",backgroundColor:"#9B9B9B",margin:"20px",borderRadius:"15px",display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}}>
@@ -170,7 +172,7 @@ export default function ExpenseTracker(){
                     <div style={{display:"flex",flexWrap:"wrap",gap:"10px"}}>
                       {getCategoryIcon(item.category)}
                       <div style={{display:"flex",flexDirection:"column"}}>
-                      <div><strong>{item.category}</strong></div>
+                      <div><strong>{item.title}</strong></div>
                       <div>{item.date}</div>
                       </div>
                     </div>
