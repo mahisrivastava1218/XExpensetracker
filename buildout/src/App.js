@@ -1,9 +1,10 @@
 import ExpenseTracker from "./ExpenseTracker/ExpenseTracker";
+import {Routes,Route} from "react-router-dom";
 function App() {
   return (
-    <div style={{width:"100vw",height:"100vh",boxSizing:"border-box"}}>
-    <ExpenseTracker/>
-    </div>
+    <Routes>
+    <Route path="/" element ={<ExpenseTracker/>}/>
+    </Routes>
   );
 }
 

@@ -1,11 +1,16 @@
+import DeleteIcon from '@mui/icons-material/Delete';
 import style from "./ExpenseTracker.module.css";
 import popupStyles from "./Popstyle.module.css";
+import Edit from "@mui/icons-material/Edit";
+import Food from '@mui/icons-material/LocalDining';
+import Travel from '@mui/icons-material/DepartureBoard';
+import Entertainment from'@mui/icons-material/VideogameAssetOff';
 import { useState } from "react";
 export default function ExpenseTracker(){
   // we want to show popup but css will same only under the box content change 
   const[showPopup,setShowPopup]= useState(false);
   const[popupType,setPopupType]= useState("");
-  const [amount,setAmount] = useState("");
+  const[amount,setAmount] = useState("");
   const[expense,setExpense] = useState({
     title:"",
     price:"",
@@ -26,12 +31,14 @@ export default function ExpenseTracker(){
          alert("Balance added successfully");
         //  clear input
          setAmount("");
+         setShowPopup(false);
     }else{
       alert("Please fill amount")
     }
   }
   const handleCancelBalance=()=>{
     setAmount("");
+    setShowPopup(false);
   }
   const handleAddExpense=()=>{
     const{title,price,category,date} = expense;
@@ -45,6 +52,7 @@ export default function ExpenseTracker(){
            category:"",
            date:""
          });
+         setShowPopup(false);
     }else{
       alert("Please fill Expense");
     }
@@ -56,6 +64,7 @@ export default function ExpenseTracker(){
         category:"",
         date:""
     })
+    setShowPopup(false);
   }
   const handleChange=(e)=>{
     const{name,value}=e.target;
@@ -66,7 +75,7 @@ export default function ExpenseTracker(){
   }
   console.log(localStorage.getItem("expense","balance"));
     return(
-        <div style={{width:"100%",height:"100%",backgroundColor:"#3B3B3B",display:"flex",flexDirection:"column",boxSizing:"border-box"}}>
+        <div style={{width:"100vw",height:"100vh",boxSizing:"border-box",backgroundColor:"#3B3B3B",display:"flex",flexDirection:"column",boxSizing:"border-box"}}>
           <h1 style={{color:"white",marginLeft:"30px",fontWeight:"700",fontSize:"32px"}}>Expense Tracker</h1>
           <header style={{backgroundColor:"#626262",height:"40%",marginLeft:"32px",marginRight:"32px",display:"flex",flexWrap:"wrap",justifyContent:"space-between"}}>
           <div style={{height:"100%",width:"70%",display:"flex",justifyContent:"space-around"}}>
@@ -131,7 +140,28 @@ export default function ExpenseTracker(){
             <div style={{height:"100%",width:"60%",display:"flex",flexDirection:"column"}}>
                    <h2 className={style.footerHeading}>Recent Transactions</h2>
                <div style={{width:"100%",height:"100%"}}>
-                <div  style={{backgroundColor:"white",width:"100%",height:"15%",borderRadius:"10px",display:"flex",alignItems:"center",paddingLeft:"10px"}}>No transactions!</div>
+                <div  style={{backgroundColor:"white",width:"100%",height:"30%",borderRadius:"10px",display:"flex",alignItems:"center",paddingLeft:"10px"}}>
+                  {expense.length>0 ? (
+                    expense.map((item,index)=>(
+                    <div style={{display:"flex",justifyContent:"space-between"}}>
+                    <div>
+                      <img src={item.category} value={item.category} alt="category-icon"/>
+                      <div style={{display:"flex",flexDirection:"column"}}>
+                      <div><strong>{item.title}</strong></div>
+                      <div>{item.date}</div>
+                      </div>
+                    </div>
+                    <div style={{display:"flex",flexWrap:"wrap",gap:"10px"}}>
+                      <div>₹{item.price}</div>
+                      <Edit alt="edit"/>
+                      <DeleteIcon style={{cursor:"pointer"}}/>
+                    </div>
+                    </div>
+                    ))
+                ):(
+                  <div>No transactions!</div>
+                )}
+                </div>
                </div>
             </div>
             <div style={{height:"100%",width:"35%",display:"flex",flexDirection:"column"}}>
